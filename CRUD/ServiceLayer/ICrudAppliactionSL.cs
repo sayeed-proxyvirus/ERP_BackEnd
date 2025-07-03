@@ -25,6 +25,11 @@ namespace CRUD.ServiceLayer
         public Task<EReadInformationResponse> JReadInformation();
         public Task<EReadInformationResponse> SReadInformation();
         public Task<EReadInformationResponse> JSReadInformation();
+        public Task<EReadInformationResponse> ECReadInformation();
+        public Task<EReadInformationResponse> WCReadInformation();
+        public Task<EReadInformationResponse> JCReadInformation();
+       
+        public Task<EReadInformationResponse> JSCReadInformation();
         public Task<EReadInformationResponse> BReadInformation();
         
         public Task<EReadInformationResponse> LVTReadInformation();

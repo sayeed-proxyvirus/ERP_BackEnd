@@ -537,6 +537,110 @@ namespace CRUD.RepositoryLayer
 
             return response;
         }
+        public async Task<EReadInformationResponse> ECReadInformation()
+        {
+            EReadInformationResponse response = new EReadInformationResponse();
+            response.ecreadInformation = new List<ECReadInformation>();
+            response.IsSuccess = true;
+            response.Message = "Successful";
+            
+            try
+            {
+                string StoreProcedure = "usp_HMEmployee";
+                //using (MySqlCommand sqlCommand = new MySqlCommand(SqlQueries.ReadInformation, _mySqlConnection))
+                using (SqlCommand sqlCommand = new SqlCommand(StoreProcedure, _sqlConnection))
+                {
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = ConnectionTimeOut;
+                    //await _mySqlConnection.OpenAsync();
+                    await _sqlConnection.OpenAsync();
+                    //using (DbDataReader _sqlDataReader = await sqlCommand.ExecuteReaderAsync())
+                    using (SqlDataReader _sqlDataReader = await sqlCommand.ExecuteReaderAsync())
+                    {
+                        if (_sqlDataReader.HasRows)
+                        {
+                            while (await _sqlDataReader.ReadAsync())
+                            {
+                                ECReadInformation getResponse = new ECReadInformation();
+                                getResponse.Count = _sqlDataReader["Count"] != DBNull.Value ? Convert.ToInt32(_sqlDataReader["Count"]) : 0;
+                                
+
+                                response.ecreadInformation.Add(getResponse);
+                            }
+                        }
+                        else
+                        {
+                            response.Message = "No data Return";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Message : " + ex.Message;
+            }
+            finally
+            {
+                //await _mySqlConnection.CloseAsync();
+                //await _mySqlConnection.DisposeAsync();
+                await _sqlConnection.CloseAsync();
+                await _sqlConnection.DisposeAsync();
+            }
+
+            return response;
+        }
+        public async Task<EReadInformationResponse> WCReadInformation()
+        {
+            EReadInformationResponse response = new EReadInformationResponse();
+            response.wcreadInformation = new List<WCReadInformation>();
+            response.IsSuccess = true;
+            response.Message = "Successful";
+            string nu = "null";
+            try
+            {
+                string StoreProcedure = "usp_HMWorkers";
+                //using (MySqlCommand sqlCommand = new MySqlCommand(SqlQueries.ReadInformation, _mySqlConnection))
+                using (SqlCommand sqlCommand = new SqlCommand(StoreProcedure, _sqlConnection))
+                {
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = ConnectionTimeOut;
+                    //await _mySqlConnection.OpenAsync();
+                    await _sqlConnection.OpenAsync();
+                    //using (DbDataReader _sqlDataReader = await sqlCommand.ExecuteReaderAsync())
+                    using (SqlDataReader _sqlDataReader = await sqlCommand.ExecuteReaderAsync())
+                    {
+                        if (_sqlDataReader.HasRows)
+                        {
+                            while (await _sqlDataReader.ReadAsync())
+                            {
+                                WCReadInformation getResponse = new WCReadInformation();
+                                getResponse.Count = _sqlDataReader["Count"] != DBNull.Value ? Convert.ToInt32(_sqlDataReader["Count"]) : 0;
+                                response.wcreadInformation.Add(getResponse);
+                            }
+                        }
+                        else
+                        {
+                            response.Message = "No data Return";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Message : " + ex.Message;
+            }
+            finally
+            {
+                //await _mySqlConnection.CloseAsync();
+                //await _mySqlConnection.DisposeAsync();
+                await _sqlConnection.CloseAsync();
+                await _sqlConnection.DisposeAsync();
+            }
+
+            return response;
+        }
         public async Task<EReadInformationResponse> SReadInformation()
         {
             EReadInformationResponse response = new EReadInformationResponse();
@@ -657,7 +761,7 @@ namespace CRUD.RepositoryLayer
             response.jsreadInformation = new List<JSReadInformation>();
             response.IsSuccess = true;
             response.Message = "Successful";
-            string nu = "null";
+            string count = "null";
             try
             {
                 string StoreProcedure = "usp_ViewSec";
@@ -683,6 +787,115 @@ namespace CRUD.RepositoryLayer
 
                                 
                                 response.jsreadInformation.Add(getResponse);
+                            }
+                        }
+                        else
+                        {
+                            response.Message = "No data Return";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Message : " + ex.Message;
+            }
+            finally
+            {
+                //await _mySqlConnection.CloseAsync();
+                //await _mySqlConnection.DisposeAsync();
+                await _sqlConnection.CloseAsync();
+                await _sqlConnection.DisposeAsync();
+            }
+
+            return response;
+        }
+        public async Task<EReadInformationResponse> JCReadInformation()
+        {
+            EReadInformationResponse response = new EReadInformationResponse();
+            response.jcreadInformation = new List<JCReadInformation>();
+            response.IsSuccess = true;
+            response.Message = "Successful";
+            
+            try
+            {
+                string StoreProcedure = "usp_HMJobs";
+                //using (MySqlCommand sqlCommand = new MySqlCommand(SqlQueries.ReadInformation, _mySqlConnection))
+                using (SqlCommand sqlCommand = new SqlCommand(StoreProcedure, _sqlConnection))
+                {
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = ConnectionTimeOut;
+                    //await _mySqlConnection.OpenAsync();
+                    await _sqlConnection.OpenAsync();
+                    //using (DbDataReader _sqlDataReader = await sqlCommand.ExecuteReaderAsync())
+                    using (SqlDataReader _sqlDataReader = await sqlCommand.ExecuteReaderAsync())
+                    {
+                        if (_sqlDataReader.HasRows)
+                        {
+                            while (await _sqlDataReader.ReadAsync())
+                            {
+                                JCReadInformation getResponse = new JCReadInformation();
+
+                                getResponse.Count = _sqlDataReader["Count"] != DBNull.Value ? Convert.ToInt32(_sqlDataReader["Count"]) : 0;
+                                
+                                response.jcreadInformation.Add(getResponse);
+                            }
+                        }
+                        else
+                        {
+                            response.Message = "No data Return";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Message : " + ex.Message;
+            }
+            finally
+            {
+                //await _mySqlConnection.CloseAsync();
+                //await _mySqlConnection.DisposeAsync();
+                await _sqlConnection.CloseAsync();
+                await _sqlConnection.DisposeAsync();
+            }
+
+            return response;
+        }
+        public async Task<EReadInformationResponse> JSCReadInformation()
+        {
+            EReadInformationResponse response = new EReadInformationResponse();
+            response.jscreadInformation = new List<JSCReadInformation>();
+            response.IsSuccess = true;
+            response.Message = "Successful";
+            string nu = "null";
+            try
+            {
+                string StoreProcedure = "usp_HMJobs";
+                //using (MySqlCommand sqlCommand = new MySqlCommand(SqlQueries.ReadInformation, _mySqlConnection))
+                using (SqlCommand sqlCommand = new SqlCommand(StoreProcedure, _sqlConnection))
+                {
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = ConnectionTimeOut;
+                    //await _mySqlConnection.OpenAsync();
+                    await _sqlConnection.OpenAsync();
+                    //using (DbDataReader _sqlDataReader = await sqlCommand.ExecuteReaderAsync())
+                    using (SqlDataReader _sqlDataReader = await sqlCommand.ExecuteReaderAsync())
+                    {
+                        if (_sqlDataReader.HasRows)
+                        {
+                            while (await _sqlDataReader.ReadAsync())
+                            {
+                                JSCReadInformation getResponse = new JSCReadInformation();
+
+
+                                
+                                getResponse.Count = _sqlDataReader["Count"] != DBNull.Value ? Convert.ToInt32(_sqlDataReader["Count"]) : 0;
+
+
+                                response.jscreadInformation.Add(getResponse);
                             }
                         }
                         else

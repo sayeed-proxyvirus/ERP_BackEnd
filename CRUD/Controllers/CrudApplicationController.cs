@@ -257,6 +257,66 @@ namespace CRUD.Controllers
         }
 
         [HttpGet]
+        [Route("ECReadInformation")]
+        public async Task<IActionResult> ECReadInformation()
+        {
+            EReadInformationResponse response = null;
+            try
+            {
+
+                response = await _crudApplicationSL.ECReadInformation();
+
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Message : " + ex.Message;
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("WCReadInformation")]
+        public async Task<IActionResult> WCReadInformation()
+        {
+            EReadInformationResponse response = null;
+            try
+            {
+
+                response = await _crudApplicationSL.WCReadInformation();
+
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Message : " + ex.Message;
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("JCReadInformation")]
+        public async Task<IActionResult> JCReadInformation()
+        {
+            EReadInformationResponse response = null;
+            try
+            {
+
+                response = await _crudApplicationSL.JCReadInformation();
+
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Message : " + ex.Message;
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet]
         [Route("SReadInformation")]
         public async Task<IActionResult> SReadInformation()
         {
@@ -286,6 +346,26 @@ namespace CRUD.Controllers
             {
 
                 response = await _crudApplicationSL.JSReadInformation();
+
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Message : " + ex.Message;
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("JSCReadInformation")]
+        public async Task<IActionResult> JSCReadInformation()
+        {
+            EReadInformationResponse response = null;
+            try
+            {
+
+                response = await _crudApplicationSL.JSCReadInformation();
 
             }
             catch (Exception ex)

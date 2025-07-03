@@ -12,9 +12,13 @@ namespace CRUD.CommonLayer.Models
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
         public List<EReadInformation> ereadInformation { get; set; }
+        public List<ECReadInformation> ecreadInformation { get; set; }
         public List<WReadInformation> wreadInformation { get; set; }
+        public List<WCReadInformation> wcreadInformation { get; set; }
         public List<JReadInformation> jreadInformation { get; set; }
+        public List<JCReadInformation> jcreadInformation { get; set; }
         public List<JSReadInformation> jsreadInformation { get; set; }
+        public List<JSCReadInformation> jscreadInformation { get; set; }
         public List<BReadInformation> breadInformation { get; set; }
         
         public List<LVTReadInformation> lvtreadInformation { get; set; }
@@ -34,6 +38,11 @@ namespace CRUD.CommonLayer.Models
         public string BankAcc { get; set; }
         
     }
+    public class ECReadInformation
+    {
+        public int Count { get; set; }
+
+    }
 
     public class WReadInformation
     {
@@ -45,6 +54,12 @@ namespace CRUD.CommonLayer.Models
         public int BankAC { get; set; }
         public DateOnly JoinDate { get; set; }
         public int Grade { get; set; }
+    }
+
+    public class WCReadInformation
+    {
+        public int Count { get; set; }
+
     }
 
     public class SReadInformation
@@ -70,11 +85,25 @@ namespace CRUD.CommonLayer.Models
         public int Food { get; set; }
     }
 
+    public class JCReadInformation
+    {
+        public int Count { get; set; }
+
+    }
+
+
     public class JSReadInformation
     {
         public int SectionsId { get; set; }
         public string SectionsName { get; set; }
     }
+
+    public class JSCReadInformation
+    {
+        public int Count { get; set; }
+
+    }
+
 
     public class BReadInformation
     {
@@ -97,22 +126,7 @@ namespace CRUD.CommonLayer.Models
         public string SectionName { get; set; }
         public string JobName { get; set; }
         public int BankAcc { get; set; }
-        //public decimal Salary { get; set; }
-        //public int WorkDay { get; set; }
-        //public int Other { get; set; }
-        //public int FestH { get; set; }
-        //public int LeaveD { get; set; }
-        //public string  Leavetyp { get; set; }
-        //public int Absent { get; set; }
-        //public int TDays { get; set; }
-        //public int Bonus { get; set; }
-        //public int Lwp { get; set; }
-        //public decimal GROSS { get; set; }
-        //public decimal Deduct { get; set; }
-        //public decimal NET { get; set; }
-        //public string  ACT_RE { get; set; }
-        //public int Code { get; set; }
-        //public DateOnly Month { get; set; }
+        
     }
 
 

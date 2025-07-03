@@ -102,6 +102,27 @@ namespace CRUD.ServiceLayer
         {
             return await _crudAppliactionRL.JSReadInformation();
         }
+        public async Task<EReadInformationResponse> ECReadInformation()
+        {
+            return await _crudAppliactionRL.ECReadInformation();
+        }
+
+        public async Task<EReadInformationResponse> WCReadInformation()
+        {
+            return await _crudAppliactionRL.WCReadInformation();
+        }
+
+        public async Task<EReadInformationResponse> JCReadInformation()
+        {
+            return await _crudAppliactionRL.JCReadInformation();
+        }
+
+        
+
+        public async Task<EReadInformationResponse> JSCReadInformation()
+        {
+            return await _crudAppliactionRL.JSCReadInformation();
+        }
         public async Task<EReadInformationResponse> BReadInformation()
         {
             return await _crudAppliactionRL.BReadInformation();
