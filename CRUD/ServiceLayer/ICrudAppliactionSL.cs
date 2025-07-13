@@ -12,6 +12,7 @@ namespace CRUD.ServiceLayer
     {
 
         public Task<LoginResponse> Login(LoginRequest request);
+        public Task<RegisterResponse> Register(RegisterRequest request);
         public Task<CreateInformationResponse> CreateInformation(ECreateInformationRequest request);
         public Task<CreateInformationResponse> CreateInformation(WCreateInformationRequest request);
         public Task<CreateInformationResponse> CreateInformation(JCreateInformationRequest request);

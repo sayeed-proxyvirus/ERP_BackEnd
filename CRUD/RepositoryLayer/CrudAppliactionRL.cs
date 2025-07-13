@@ -1,11 +1,13 @@
 ﻿using CRUD.CommonLayer.Models;
-using Microsoft.Extensions.Configuration;
+using BCrypt.Net;
 using System;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using System.Threading.Tasks;
 using static CRUD.CommonLayer.Models.SearchInformationByDate;
 using static CRUD.CommonLayer.Models.SalarySearchByDate;
+using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace CRUD.RepositoryLayer
 {
@@ -23,61 +25,84 @@ namespace CRUD.RepositoryLayer
 
         public async Task<LoginResponse> Login(LoginRequest request)
         {
-            LoginResponse response = new LoginResponse();
-            response.IsSuccess = true;
-            response.Message = "Successful";
+            LoginResponse response = new LoginResponse { IsSuccess = false, Message = "Invalid credentials." };
+
             try
             {
-                string StoredProcedure = "usp_login";
-                //using (MySqlCommand sqlCommand = new MySqlCommand(SqlQueries.SearchInformationById, _mySqlConnection))
-                using (SqlCommand sqlCommand = new SqlCommand(StoredProcedure, _sqlConnection))
+                using (SqlCommand sqlCommand = new SqlCommand("usp_login", _sqlConnection))
                 {
-                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                    sqlCommand.CommandTimeout = ConnectionTimeOut;
-                    sqlCommand.Parameters.AddWithValue("@EmpName", request.UserName);
-                    sqlCommand.Parameters.AddWithValue("CardNo", request.Password);
-                    //await _mySqlConnection.OpenAsync();
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@UserName", request.UserName);
+
                     await _sqlConnection.OpenAsync();
-                    //using (DbDataReader _sqlDataReader = await sqlCommand.ExecuteReaderAsync())
+
                     using (SqlDataReader _sqlDataReader = await sqlCommand.ExecuteReaderAsync())
                     {
-                        if (_sqlDataReader.HasRows)
+                        if (await _sqlDataReader.ReadAsync())
                         {
-                            await _sqlDataReader.ReadAsync();
-                            //response.esearchInformationById = new ESearchInformationById();
-                            //response.esearchInformationById.EmpName = _sqlDataReader["EmpName"] != DBNull.Value ? _sqlDataReader["EmpName"].ToString() : string.Empty;
-                            //response.esearchInformationById.SectionName = _sqlDataReader["SectionName"] != DBNull.Value ? _sqlDataReader["SectionName"].ToString() : string.Empty;
-                            //response.esearchInformationById.JoinDate = _sqlDataReader["JoinDate"] == DBNull.Value ? Convert.ToDateTime(null) : Convert.ToDateTime(_sqlDataReader["JoinDate"]);
-                            //response.esearchInformationById.EmpName = _sqlDataReader["EmpName"] != DBNull.Value ? _sqlDataReader["EmpName"].ToString() : string.Empty;
-                            //response.esearchInformationById.CardNo = _sqlDataReader["CardNo"] != DBNull.Value ? _sqlDataReader["CardNo"].ToString() : string.Empty;
-                            //response.esearchInformationById.BankAcc = _sqlDataReader["BankAcc"] != DBNull.Value ? _sqlDataReader["BankAcc"].ToString() : string.Empty;
-                            response.Message = "Login Successfull!!!";
+                            string storedHashedPassword = _sqlDataReader["HashedPassword"].ToString();
 
-
+                            if (BCrypt.Net.BCrypt.Verify(request.Password, storedHashedPassword))
+                            {
+                                response.IsSuccess = true;
+                                response.Message = "Login successful!";
+                            }
                         }
                         else
                         {
-                            response.Message = "No data Found";
+                            response.Message = "User not found.";
                         }
                     }
-                }
 
+                    await _sqlConnection.CloseAsync();
+                }
             }
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = "Exception Message : " + ex.Message;
+                response.Message = "Exception: " + ex.Message;
             }
-            finally
+
+                return response;
+        }
+        public async Task<RegisterResponse> Register(RegisterRequest request)
+        {
+            RegisterResponse response = new RegisterResponse { IsSuccess = false, Message = "Registration failed." };
+
+            try
             {
-                //await _mySqlConnection.CloseAsync();
-                //await _mySqlConnection.DisposeAsync();
-                await _sqlConnection.CloseAsync();
-                await _sqlConnection.DisposeAsync();
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+                using (SqlCommand sqlCommand = new SqlCommand("usp_registerUser", _sqlConnection))
+                {
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@UserName", request.UserName);
+                    sqlCommand.Parameters.AddWithValue("@HashedPassword", hashedPassword);
+                    sqlCommand.Parameters.AddWithValue("@FullName", request.FullName);
+                    sqlCommand.Parameters.AddWithValue("@Email", request.Email);
+
+
+                    await _sqlConnection.OpenAsync();
+                    await sqlCommand.ExecuteNonQueryAsync();
+                    await _sqlConnection.CloseAsync();
+
+                    response.IsSuccess = true;
+                    response.Message = "Registration successful!";
+                }
+            }
+            catch (SqlException ex) when (ex.Number == 50000) // RAISERROR number
+            {
+                response.Message = ex.Message; // e.g., "User already exists."
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Exception: " + ex.Message;
             }
 
             return response;
         }
+
+
 
 
         public async Task<CreateInformationResponse> CreateInformation(ECreateInformationRequest request)
@@ -873,7 +898,7 @@ namespace CRUD.RepositoryLayer
             string nu = "null";
             try
             {
-                string StoreProcedure = "usp_HMJobs";
+                string StoreProcedure = "usp_HMSections";
                 //using (MySqlCommand sqlCommand = new MySqlCommand(SqlQueries.ReadInformation, _mySqlConnection))
                 using (SqlCommand sqlCommand = new SqlCommand(StoreProcedure, _sqlConnection))
                 {

@@ -22,6 +22,10 @@ namespace CRUD.ServiceLayer
         {
             return await _crudAppliactionRL.Login(request);
         }
+        public async Task<RegisterResponse> Register(RegisterRequest request)
+        {
+            return await _crudAppliactionRL.Register(request);
+        }
 
         public async Task<CreateInformationResponse> CreateInformation(ECreateInformationRequest request)
         {

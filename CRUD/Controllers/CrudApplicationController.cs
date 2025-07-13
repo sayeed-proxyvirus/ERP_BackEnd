@@ -50,6 +50,25 @@ namespace CRUD.Controllers
 
             return Ok(response);
         }
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult> Register(RegisterRequest request)
+        {
+            RegisterResponse response = null;
+            try
+            {
+
+                response = await _crudApplicationSL.Register(request);
+
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Message : " + ex.Message;
+            }
+
+            return Ok(response);
+        }
 
 
         [HttpPost]

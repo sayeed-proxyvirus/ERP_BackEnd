@@ -13,6 +13,7 @@ namespace CRUD.RepositoryLayer
 
 
         public Task<LoginResponse> Login(LoginRequest request);
+        public Task<RegisterResponse> Register(RegisterRequest request);
 
 
         public Task<CreateInformationResponse> CreateInformation(ECreateInformationRequest request);
